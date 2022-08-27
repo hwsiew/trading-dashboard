@@ -1,0 +1,26 @@
+{
+  "name": "dashboard",
+  "version": "1.0.0",
+  "author": "HW, Siew",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "yarn web:dev & yarn server:dev",
+    "web": "yarn workspace web",
+    "web:add": "yarn web add",
+    "web:remove": "yarn web remove",
+    "web:dev": "yarn web run dev",
+    "server": "env-cmd yarn workspace server",
+    "server:add": "yarn server add",
+    "server:remove": "yarn server remove",
+    "server:dev": "yarn server run dev",
+    "server:test": "yarn server run test"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "env-cmd": "^10.1.0"
+  }
+}

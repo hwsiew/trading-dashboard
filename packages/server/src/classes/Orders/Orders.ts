@@ -122,7 +122,10 @@ export default class Orders<O extends Order>{
    */
   getPrices (count?: number) {
     const all_prices = Array.from(this._prices.keys());
-    all_prices.sort((a,b) => Big(b).minus(a).toNumber());
+    all_prices.sort((a,b) => {
+      if (this._type === OrderType.Ask) return Big(a).minus(b).toNumber();
+      else return Big(b).minus(a).toNumber()
+    });
 
     const selected = all_prices.slice(0, count);
 

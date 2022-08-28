@@ -209,4 +209,17 @@ describe('Test Orders class', () => {
   it('should get order type', () => {
     expect(orders.getType()).toBe(OrderType.Ask)
   });
+
+  it('should delete an order', () => {
+    orders.add({
+      id: 'a1',
+      price: '1',
+      volume: '0.1',
+      type: OrderType.Ask
+    });
+    expect(orders.getPrices().length).toBe(1);
+    orders.del('a1');
+    expect(orders.getPrices().length).toBe(0);
+    expect(orders.get('a1')).toBeFalsy();
+  })
 })

@@ -1,7 +1,7 @@
 import {
   Order,
   OrderType
-} from 'types';
+} from './types';
 import Big from 'big.js';
 
 export default class Orders<O extends Order>{
@@ -80,6 +80,13 @@ export default class Orders<O extends Order>{
   }
 
   /**
+   * check if an order id exists
+   */
+  has (id: O['id']) {
+    return this._index.has(id);
+  }
+
+  /**
    * reduce order volume
    */
   reduce (id: O['id'], volume: string) {
@@ -119,15 +126,21 @@ export default class Orders<O extends Order>{
 
     const selected = all_prices.slice(0, count);
 
-    const list = selected.map(price => {
+    const list = selected.reduce<{
+      volume: string, 
+      ids: O['id'][], 
+      price: O["price"]
+    }[]>((acc, price) => {
       const entry = this._prices.get(price);
 
-      return {
-        ...entry,
-        price
-      }
-    })
-
-    return list;
+      entry && acc.push({
+          ...entry,
+          price
+        });
+    
+      return acc;
+    },[]);
+    
+    return list.filter(e => e !== undefined);
   }
 }

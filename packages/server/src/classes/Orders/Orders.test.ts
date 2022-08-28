@@ -2,7 +2,7 @@ import Orders from "./Orders";
 import {
   Order,
   OrderType
-} from 'types';
+} from './types';
 
 describe('Test Orders class', () => {
   let orders: Orders<Order>;
@@ -193,4 +193,16 @@ describe('Test Orders class', () => {
     
 
   });
+
+  it('should check if an order exists', () => {
+    orders.add({
+      id: 'a1',
+      price: '1',
+      volume: '0.1',
+      type: OrderType.Ask
+    });
+
+    expect(orders.has('a1')).toBeTruthy();
+    expect(orders.has('a2')).toBeFalsy();
+  })
 })

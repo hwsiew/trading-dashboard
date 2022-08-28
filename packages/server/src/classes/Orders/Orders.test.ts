@@ -204,5 +204,9 @@ describe('Test Orders class', () => {
 
     expect(orders.has('a1')).toBeTruthy();
     expect(orders.has('a2')).toBeFalsy();
-  })
+  });
+
+  it('should get order type', () => {
+    expect(orders.getType()).toBe(OrderType.Ask)
+  });
 })

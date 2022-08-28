@@ -143,4 +143,11 @@ export default class Orders<O extends Order>{
     
     return list.filter(e => e !== undefined);
   }
+
+  /**
+   * get the type of orders
+   */
+  getType () {
+    return this._type;
+  }
 }

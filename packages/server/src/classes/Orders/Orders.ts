@@ -65,17 +65,7 @@ export default class Orders<O extends Order>{
       throw new Error('Order is not found!')
     }
 
-    this._index.delete(id);
-    
-    const price = this._prices.get(order.price);
-    if (price) {
-      const i = price.ids.indexOf(order.id);
-      price.ids.splice(i,1);
-
-      if(Big(price.volume).eq(0) || !price.ids.length){
-        this._prices.delete(order.price);
-      }
-    }
+    this.reduce(id, order.volume);
   }
 
   /**
@@ -98,14 +88,25 @@ export default class Orders<O extends Order>{
       throw new Error('Order id is not found!');
     }
 
+    let deleted = false;
     order.volume = Big(order.volume).minus(volume).toString();
     if (Big(order.volume).eq(0)) {
-      this.del(order.id)
+      this._index.delete(id);
+      deleted = true;
     }
 
     const price = this._prices.get(order.price);
     if (price) {
       price.volume = Big(price.volume).minus(volume).toString();
+      
+      if (deleted) {
+        const i = price.ids.indexOf(order.id);
+        price.ids.splice(i,1);
+      }
+
+      if(Big(price.volume).eq(0) || !price.ids.length){
+        this._prices.delete(order.price);
+      }
     }
   }
 

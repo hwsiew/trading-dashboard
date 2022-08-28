@@ -62,7 +62,7 @@ export default class Orders<O extends Order>{
   del (id: O['id']) {
     const order = this._index.get(id);
     if (!order) {
-      return
+      throw new Error('Order is not found!')
     }
 
     this._index.delete(id);
@@ -109,4 +109,24 @@ export default class Orders<O extends Order>{
     }
   }
 
+  /**
+   * get sorted price list with optional count
+   */
+  getPrices (count?: number) {
+    const all_prices = Array.from(this._prices.keys());
+    all_prices.sort((a,b) => Big(b).minus(a).toNumber());
+
+    const selected = all_prices.slice(0, count);
+
+    const list = selected.map(price => {
+      const entry = this._prices.get(price);
+
+      return {
+        ...entry,
+        price
+      }
+    })
+
+    return list;
+  }
 }
